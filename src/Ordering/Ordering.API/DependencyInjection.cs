@@ -9,7 +9,6 @@ namespace Ordering.API
         {
 
             services.AddCarter();
-
             return services;
         }
 
