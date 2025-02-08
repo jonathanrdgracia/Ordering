@@ -1,5 +1,4 @@
-﻿
-namespace Ordering.Domain.Abstraction
+﻿namespace Ordering.Domain.Abstraction
 {
     public abstract class Aggregate<TID> : Entity<TID>, IAggregate<TID>
     {
@@ -13,9 +12,9 @@ namespace Ordering.Domain.Abstraction
 
         public IDomainEvent[] clearDomainEvents()
         {
-            IDomainEvent[] domainEvents = _domainEvents.ToArray();
+            IDomainEvent[] dequeueEvents = _domainEvents.ToArray();
             _domainEvents.Clear();
-            return domainEvents;
+            return dequeueEvents;
         }
     }
 }

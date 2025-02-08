@@ -3,11 +3,11 @@
 namespace Ordering.Domain.Abstraction
 {
 
-    interface IEntity<T> : IEntity
+    public interface IEntity<T> : IEntity
     {
         public T Id { get; set; }
     }
-    interface IEntity
+    public interface IEntity
     {
         public string? Name { get; set; }
         public DateTime Date { get; set; }
