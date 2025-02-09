@@ -2,23 +2,49 @@
 using Ordering.Application.Data;
 using Ordering.Application.Dtos;
 using Ordering.Domain.Models;
+using Ordering.Domain.ValueObject;
 
 namespace Ordering.Infrastructure.Data
 {
-    public class ApplicationDbContext: DbContext, IApplicationDbContext
+    public class ApplicationDbContext: IApplicationDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options) {}
+        private readonly DbContext _context;
 
+        public ApplicationDbContext(IConfiguration configuration)
+        {
+            var connectionString = configuration.GetConnectionString("Database");
+            _context = new DbContext(connectionString);
+        }
 
-        public DbSet<Order> Orders => Set<Order>();
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            return _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public Task<List<Order>> GetOrdersAsync() => _context.GetOrdersAsync();
+     
 
         public Task<int> CreateOrderAsync(Order order)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> DeleteOrderAsync(int id)
+        Task<int> IApplicationDbContext.UpdateOrderAsync(Order order)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<int> IApplicationDbContext.DeleteOrderAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task AddOrderAsync(Order order)
+        {
+            await  _context.AddOrderAsync(order);
+        }
+
+        Task<IEnumerable<Order>> IApplicationDbContext.GetOrdersAsync()
         {
             throw new NotImplementedException();
         }
@@ -26,28 +52,6 @@ namespace Ordering.Infrastructure.Data
         public Task<Order> GetOrderByIdAsync(int id)
         {
             throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Order>> GetOrdersAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> UpdateOrderAsync(Order order)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.Entity<Order>().Property(c => c.CustomerName).IsRequired();
-            builder.Entity<Order>().Property(c => c.OrderDate).IsRequired();
-            builder.Entity<Order>().Property(c => c.TotalAmount).IsRequired();
-
-            builder.Entity<Order>().ToTable("Orders", "Ordering");
-
-
-            base.OnModelCreating(builder);
         }
     }
 }

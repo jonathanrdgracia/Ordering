@@ -4,26 +4,25 @@ namespace Ordering.Domain.Models
 {
     public class Order : Aggregate<OrderId>
     {
-        private readonly List<OrderItem> _orderItems = new();
-
         public int Id { get; private set; }
         public string CustomerName { get; set; } = default!;
         public decimal TotalAmount { get; set; } = default!;
         public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; } = OrderStatus.Active;
-
-        public static Order Create(string customerName, decimal totalAmount)
+        public static Order Create(string customerName, decimal totalAmount, DateTime orderDate)
         {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(totalAmount);
+            ArgumentOutOfRangeException.ThrowIfLessThan(customerName.Length, 10);
+
             var order = new Order
             {
                 CustomerName = customerName,
                 TotalAmount = totalAmount,
-              
+                OrderDate = orderDate
             };
 
             order.AddDomainEvent(new OrderCreatedEvent(order));
             return order;
-
         }
 
         public void Update(decimal totalAmount, string customerName)
@@ -43,11 +42,7 @@ namespace Ordering.Domain.Models
         public void Add(decimal totalAmount, string customerName)
         {
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(totalAmount);
-            ArgumentOutOfRangeException.ThrowIfLessThan(customerName.Length,5);
-
-
-
+            ArgumentOutOfRangeException.ThrowIfLessThan(customerName.Length, 5);
         }
-
     }
 }

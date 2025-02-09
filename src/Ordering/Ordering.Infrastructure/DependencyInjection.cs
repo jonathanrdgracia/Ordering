@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
 using Ordering.Application.Data;
 using Ordering.Infrastructure.Data;
 
@@ -11,19 +11,16 @@ namespace Ordering.Infrastructure
         {
             var connectionString = configuration.GetConnectionString("DataBase");
 
-            services.AddDbContext<ApplicationDbContext>(options=>
-            options.UseSqlServer(connectionString));
-
-            services.AddDbContext<ApplicationDbContext>((sp, options) =>
+            services.AddTransient<SqlConnection>((sp) =>
             {
-                options.UseSqlServer(connectionString);
+                var configuration = sp.GetRequiredService<IConfiguration>();
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                return new SqlConnection(connectionString);
             });
 
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
             return services;
-                        
-            
         }
     }
 }

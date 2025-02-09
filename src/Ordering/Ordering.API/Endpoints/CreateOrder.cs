@@ -8,22 +8,28 @@ namespace Ordering.API.Endpoints
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-
             app.MapPost("/orders", async (CreateOrderRequest request, ISender sender) =>
             {
-                var command = request.Adapt<CreateOrderCommand>();
-                var result = await sender.Send(command);
+                try
+                {
+                    var command = request.Adapt<CreateOrderCommand>();
+                    await sender.Send(command);
 
-                var response = result.Adapt<CreateOrderResponde>();
-
-                return Results.Created($"/orders/{response.Id}", response);
-
+                    return Results.StatusCode(StatusCodes.Status201Created);
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    return Results.Problem(
+                        title: "Validation Error",
+                        detail: ex.Message,
+                        statusCode: StatusCodes.Status400BadRequest);
+                }
             })
-                .WithName("CreateOrder")
-                .Produces<CreateOrderResponde>(StatusCodes.Status201Created)
-                .ProducesProblem(StatusCodes.Status400BadRequest)
-                .WithSummary("Create Order")
-                .WithDescription("Create Order");
+            .WithName("CreateOrder")
+            .Produces<CreateOrderResponde>(StatusCodes.Status201Created)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary("Create Order")
+            .WithDescription("Create Order");
         }
     }
 }
