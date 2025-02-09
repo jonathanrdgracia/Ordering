@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Ordering.Application.Data;
 using Ordering.Infrastructure.Data;
 
 namespace Ordering.Infrastructure
@@ -13,16 +14,12 @@ namespace Ordering.Infrastructure
             services.AddDbContext<ApplicationDbContext>(options=>
             options.UseSqlServer(connectionString));
 
-            // Add services to the container.
-            //services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
-            //services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+            services.AddDbContext<ApplicationDbContext>((sp, options) =>
+            {
+                options.UseSqlServer(connectionString);
+            });
 
-            //services.AddDbContext<ApplicationDbContext>((sp, options) =>
-            //{
-            //    options.Add Interceptors(sp.GetServices<ISaveChangesInterceptor>());
-            //    options.UseSqlServer(connectionString);
-            //});
-            //services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
             return services;
                         

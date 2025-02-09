@@ -2,7 +2,7 @@
 {
     public enum OrderStatus
     {
-        Active = 0,
-        Deleted = 1
+        Active = 1,
+        Deleted = 0
     }
 }

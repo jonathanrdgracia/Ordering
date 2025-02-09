@@ -7,11 +7,11 @@ namespace Ordering.Application.Data
     {
         DbSet<Order> Orders { get; }
 
-        //Task<IEnumerable<Orders>> GetOrdersAsync();
-        //Task<Orders> GetOrderByIdAsync(int id);
-        //Task<int> CreateOrderAsync(Orders order);
-        //Task<int> UpdateOrderAsync(Orders order);
-        //Task<int> DeleteOrderAsync(int id);
+        Task<IEnumerable<Order>> GetOrdersAsync();
+        Task<Order> GetOrderByIdAsync(int id);
+        Task<int> CreateOrderAsync(Order order);
+        Task<int> UpdateOrderAsync(Order order);
+        Task<int> DeleteOrderAsync(int id);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
     }

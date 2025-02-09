@@ -3,10 +3,10 @@
 namespace Ordering.Application.Dtos
 {
         public record OrderDto(
-         Guid Id,
-         Guid CustomerId ,
-         string CustomerName,
-         OrderStatus OrderStatus,
-         decimal TotalAmount
+            int Id,
+            string CustomerName,
+            decimal TotalAmount,
+            OrderStatus Status,
+            DateTime OrderDate
          );
 }
