@@ -1,6 +1,4 @@
-﻿using static Ordering.Domain.Abstraction.IEntity;
-
-namespace Ordering.Domain.Abstraction
+﻿namespace Ordering.Domain.Abstraction
 {
 
     public interface IEntity<T> : IEntity
@@ -9,7 +7,7 @@ namespace Ordering.Domain.Abstraction
     }
     public interface IEntity
     {
-        public string? Name { get; set; }
+        public string? CustomerName { get; set; }
         public DateTime Date { get; set; }
         public decimal TotalAmount  { get; set; }
     }
