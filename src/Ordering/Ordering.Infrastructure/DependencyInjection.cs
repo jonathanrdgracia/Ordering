@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Ordering.Application.Data;
 using Ordering.Infrastructure.Data;
 

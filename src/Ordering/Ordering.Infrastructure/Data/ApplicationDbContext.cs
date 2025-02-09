@@ -1,8 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Ordering.Application.Data;
-using Ordering.Application.Dtos;
+﻿using Ordering.Application.Data;
 using Ordering.Domain.Models;
-using Ordering.Domain.ValueObject;
 
 namespace Ordering.Infrastructure.Data
 {

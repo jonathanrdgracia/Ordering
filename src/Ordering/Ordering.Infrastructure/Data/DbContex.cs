@@ -1,5 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
-using Ordering.Domain.Models;
+﻿using Ordering.Domain.Models;
+
 
 namespace Ordering.Infrastructure.Data
 {
