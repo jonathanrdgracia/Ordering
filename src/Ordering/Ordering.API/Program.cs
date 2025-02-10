@@ -1,8 +1,19 @@
 using Ordering.Application;
 using Ordering.Infrastructure;
 using Ordering.API;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost5174", policy =>
+    {
+        policy.WithOrigins("http://localhost:5174")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 builder.Services
     .AddAplicactionServices()
@@ -11,7 +22,7 @@ builder.Services
 
 var app = builder.Build();
 
-//app.UseHttpsRedirection();
+app.UseCors("AllowLocalhost5174");
 app.UseApiServices();
 
 app.Run();

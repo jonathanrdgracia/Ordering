@@ -11,8 +11,8 @@ namespace Ordering.Domain.Models
         public OrderStatus Status { get; set; } = OrderStatus.Active;
         public static Order Create(string customerName, decimal totalAmount, DateTime orderDate)
         {
-            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(totalAmount);
-            ArgumentOutOfRangeException.ThrowIfLessThan(customerName.Length, 10);
+            ArgumentOutOfRangeException.ThrowIfLessThan(totalAmount.ToString().Length,0);
+            ArgumentOutOfRangeException.ThrowIfLessThan(customerName.Length, 3);
 
             var order = new Order
             {
