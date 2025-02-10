@@ -1,8 +1,6 @@
-﻿using BuildingBlocks.CQRS;
+﻿
 using Mapster;
-using Ordering.Application.Data;
 using Ordering.Application.Dtos;
-using Ordering.Application.Extensions;
 using Ordering.Application.Orders.Queries.GetOrders;
 
 namespace Ordering.Application.Orders.Queries.GetOrder;
@@ -16,10 +14,8 @@ public class GetOrderHandler(IApplicationDbContext dbContext)
         var orderList = orders.Adapt<List<OrderDto>>();
 
         var orderDtos = ProjecToOrderDto(orderList);
-        
 
         return new GetOrdersResult(orderDtos.ToOrderDTOList());
-
     }
 
     private List<OrderDto> ProjecToOrderDto(List<OrderDto> orders)

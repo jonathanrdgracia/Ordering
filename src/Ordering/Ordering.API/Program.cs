@@ -4,12 +4,14 @@ using Ordering.API;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+var allowedOrigins = builder.Configuration.GetSection("AllowedCorsOrigins").Get<string[]>();
+
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost5174", policy =>
+    options.AddPolicy("AllowOrigins", policy =>
     {
-        policy.WithOrigins("http://localhost:5174")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -22,7 +24,7 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseCors("AllowLocalhost5174");
+app.UseCors("AllowOrigins");
 app.UseApiServices();
 
 app.Run();

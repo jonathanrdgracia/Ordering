@@ -30,7 +30,7 @@ namespace Ordering.Infrastructure.Data
 
                 using (var reader = await command.ExecuteReaderAsync())
                 {
-                    while (await reader.ReadAsync()) // Cambiado de 'if' a 'while' para múltiples registros
+                    while (await reader.ReadAsync())
                     {
                         var order = new Order
                         {
@@ -38,7 +38,7 @@ namespace Ordering.Infrastructure.Data
                             CustomerName = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
                             TotalAmount = reader.IsDBNull(2) ? 0 : reader.GetDecimal(2),
                             Status = reader.GetBoolean(3) ? OrderStatus.Active : OrderStatus.Deleted,
-                            OrderDate = reader.IsDBNull(4) ? DateTime.MinValue : reader.GetDateTime(4)
+                            OrderDate = reader.GetDateTime(4)
                         };
 
                         orders.Add(order);
@@ -48,8 +48,6 @@ namespace Ordering.Infrastructure.Data
 
             return orders;
         }
-
-
         public async Task<Order?> GetOrderByIdAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
