@@ -16,8 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Orders\Commands\DeleteOrder\" />
-    <Folder Include="Orders\Commands\UpdateOrder\" />
     <Folder Include="Orders\EventHandlers\" />
     <Folder Include="Orders\Queries\GetOrderById\" />
   </ItemGroup>

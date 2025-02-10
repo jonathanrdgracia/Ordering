@@ -1,4 +1,5 @@
-﻿using Ordering.Domain.Models;
+﻿using Ordering.Application.Dtos;
+using Ordering.Domain.Models;
 
 namespace Ordering.Application.Data
 {
@@ -6,10 +7,11 @@ namespace Ordering.Application.Data
     {
         Task AddOrderAsync(Order order);
         Task<List<Order>> GetOrdersAsync();
-        Task<Order> GetOrderByIdAsync(int id); 
-        Task<int> CreateOrderAsync(Order order);
-        Task<int> UpdateOrderAsync(Order order);
-        Task<int> DeleteOrderAsync(int id);
+        Task<Order> GetOrdersByIdAsync(int id); 
+        Task<Order> GetOrderByIdAsync(int id);
+        Task<Order> CreateOrderAsync(Order order);
+        Task UpdateOrderAsync(OrderDto order);
+        Task DeleteOrderAsync(int id);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

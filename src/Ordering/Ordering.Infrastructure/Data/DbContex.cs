@@ -1,4 +1,5 @@
-﻿using Ordering.Domain.Enums;
+﻿using Ordering.Application.Dtos;
+using Ordering.Domain.Enums;
 using Ordering.Domain.Models;
 
 
@@ -54,7 +55,7 @@ namespace Ordering.Infrastructure.Data
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var command = new SqlCommand("SELECT CustomerName, Amount, Status, OrderDate  FROM [Ordering].[Orders] WHERE Id = @Id", connection);
+                var command = new SqlCommand("SELECT Id, CustomerName, TotalAmount, Status, OrderDate  FROM [Ordering].[Orders] WHERE Id = @Id", connection);
                 command.Parameters.AddWithValue("@Id", id);
 
                 using (var reader = await command.ExecuteReaderAsync())
@@ -63,10 +64,11 @@ namespace Ordering.Infrastructure.Data
                     {
                         return new Order
                         {
+                            Id = reader.GetInt32(0),
                             CustomerName = reader.GetString(1),
                             TotalAmount = reader.GetDecimal(2),
-                            OrderDate = reader.GetDateTime(3)
-                            
+                            Status = reader.GetBoolean(3) ? OrderStatus.Active : OrderStatus.Deleted,
+                            OrderDate = reader.GetDateTime(4)
                         };
                     }
                 }
@@ -76,29 +78,31 @@ namespace Ordering.Infrastructure.Data
 
 
 
-        public async Task AddOrderAsync(Order order)
+        public async Task AddOrderAsync(Order Order)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
                 var command = new SqlCommand("INSERT INTO [Ordering].[Orders] " +
                     " ([CustomerName],[OrderDate],[TotalAmount],[Status]) VALUES (@CustomerName,@OrderDate,@TotalAmount,@Status)", connection);
-                command.Parameters.AddWithValue("@CustomerName", order.CustomerName);
+                command.Parameters.AddWithValue("@CustomerName", Order.CustomerName);
                 command.Parameters.AddWithValue("@OrderDate", DateTime.UtcNow);
-                command.Parameters.AddWithValue("@TotalAmount", 33.4);
-                command.Parameters.AddWithValue("@Status", order.Status);
+                command.Parameters.AddWithValue("@TotalAmount", Order.TotalAmount);
+                command.Parameters.AddWithValue("@Status", Order.Status);
                 await command.ExecuteNonQueryAsync();
             }
         }
 
-        public async Task UpdateOrderAsync(Order order)
+        public async Task UpdateOrderAsync(OrderDto Order)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var command = new SqlCommand("UPDATE Orders SET Description = @Description, Amount = @Amount WHERE Id = @Id", connection);
-                command.Parameters.AddWithValue("@Description", order.CustomerName);
-                command.Parameters.AddWithValue("@Amount", order.TotalAmount);
+                var command = new SqlCommand("UPDATE [Ordering].[Orders] SET CustomerName = @CustomerName,Status = @Status, TotalAmount = @TotalAmount WHERE Id = @Id", connection);
+                command.Parameters.AddWithValue("@CustomerName", Order.CustomerName);
+                command.Parameters.AddWithValue("@Id", Order.Id);
+                command.Parameters.AddWithValue("@TotalAmount", Order.TotalAmount);
+                command.Parameters.AddWithValue("@Status", Order.Status);
                 await command.ExecuteNonQueryAsync();
             }
         }
