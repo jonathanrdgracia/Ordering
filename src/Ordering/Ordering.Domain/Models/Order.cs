@@ -4,7 +4,7 @@ namespace Ordering.Domain.Models
 {
     public class Order : Aggregate<OrderId>
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public string CustomerName { get; set; } = default!;
         public decimal TotalAmount { get; set; } = default!;
         public DateTime OrderDate { get; set; }

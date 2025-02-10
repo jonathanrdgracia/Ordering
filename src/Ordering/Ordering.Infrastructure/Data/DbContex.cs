@@ -1,4 +1,5 @@
-﻿using Ordering.Domain.Models;
+﻿using Ordering.Domain.Enums;
+using Ordering.Domain.Models;
 
 
 namespace Ordering.Infrastructure.Data
@@ -20,32 +21,40 @@ namespace Ordering.Infrastructure.Data
         public async Task<List<Order>> GetOrdersAsync()
         {
             var orders = new List<Order>();
+
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var command = new SqlCommand("SELECT Id, Description, Amount FROM Orders", connection);
+                var command = new SqlCommand("SELECT Id, CustomerName, TotalAmount, Status, OrderDate FROM [Ordering].[Orders]", connection);
+
                 using (var reader = await command.ExecuteReaderAsync())
                 {
-                    while (await reader.ReadAsync())
+                    while (await reader.ReadAsync()) // Cambiado de 'if' a 'while' para múltiples registros
                     {
-                        orders.Add(new Order
+                        var order = new Order
                         {
-                            
-                            CustomerName = reader.GetString(1),
-                            TotalAmount = reader.GetDecimal(2)
-                        });
+                            Id = reader.GetInt32(0),
+                            CustomerName = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                            TotalAmount = reader.IsDBNull(2) ? 0 : reader.GetDecimal(2),
+                            Status = reader.GetBoolean(3) ? OrderStatus.Active : OrderStatus.Deleted,
+                            OrderDate = reader.IsDBNull(4) ? DateTime.MinValue : reader.GetDateTime(4)
+                        };
+
+                        orders.Add(order);
                     }
                 }
             }
+
             return orders;
         }
+
 
         public async Task<Order?> GetOrderByIdAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var command = new SqlCommand("SELECT Id, Description, Amount FROM Orders WHERE Id = @Id", connection);
+                var command = new SqlCommand("SELECT CustomerName, Amount, Status, OrderDate  FROM [Ordering].[Orders] WHERE Id = @Id", connection);
                 command.Parameters.AddWithValue("@Id", id);
 
                 using (var reader = await command.ExecuteReaderAsync())
@@ -55,13 +64,17 @@ namespace Ordering.Infrastructure.Data
                         return new Order
                         {
                             CustomerName = reader.GetString(1),
-                            TotalAmount = reader.GetDecimal(2)
+                            TotalAmount = reader.GetDecimal(2),
+                            OrderDate = reader.GetDateTime(3)
+                            
                         };
                     }
                 }
             }
             return null;
         }
+
+
 
         public async Task AddOrderAsync(Order order)
         {
@@ -99,6 +112,18 @@ namespace Ordering.Infrastructure.Data
                 command.Parameters.AddWithValue("@Id", id);
                 await command.ExecuteNonQueryAsync();
             }
+        }
+    }
+    public static class SqlDataReaderExtensions
+    {
+        public static OrderStatus GetOrderStatus(this SqlDataReader reader, string columnName)
+        {
+            if (!reader.IsDBNull(reader.GetOrdinal(columnName)))
+            {
+                bool status = reader.GetBoolean(reader.GetOrdinal(columnName));
+                return status ? OrderStatus.Active : OrderStatus.Deleted;
+            }
+            return OrderStatus.Deleted; 
         }
     }
 

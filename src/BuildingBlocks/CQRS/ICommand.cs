@@ -2,7 +2,7 @@
 
 namespace BuildingBlocks.CQRS
 {
-    interface ICommand: ICommand<Unit>
+    public interface ICommand: ICommand<Unit>
     {
 
     }

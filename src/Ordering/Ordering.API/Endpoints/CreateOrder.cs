@@ -8,7 +8,7 @@ namespace Ordering.API.Endpoints
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/orders", async (CreateOrderRequest request, ISender sender) =>
+            app.MapPost("/api/orders", async (CreateOrderRequest request, ISender sender) =>
             {
                 try
                 {

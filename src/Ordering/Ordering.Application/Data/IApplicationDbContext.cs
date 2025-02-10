@@ -5,7 +5,7 @@ namespace Ordering.Application.Data
     public interface IApplicationDbContext
     {
         Task AddOrderAsync(Order order);
-        Task<IEnumerable<Order>> GetOrdersAsync();
+        Task<List<Order>> GetOrdersAsync();
         Task<Order> GetOrderByIdAsync(int id); 
         Task<int> CreateOrderAsync(Order order);
         Task<int> UpdateOrderAsync(Order order);

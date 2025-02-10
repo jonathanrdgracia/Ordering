@@ -18,7 +18,6 @@ namespace Ordering.Infrastructure.Data
             return _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<List<Order>> GetOrdersAsync() => _context.GetOrdersAsync();
      
 
         public Task<int> CreateOrderAsync(Order order)
@@ -41,10 +40,8 @@ namespace Ordering.Infrastructure.Data
             await  _context.AddOrderAsync(order);
         }
 
-        Task<IEnumerable<Order>> IApplicationDbContext.GetOrdersAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public Task<List<Order>> GetOrdersAsync() => _context.GetOrdersAsync();
+        
 
         public Task<Order> GetOrderByIdAsync(int id)
         {
