@@ -26,7 +26,7 @@ namespace Ordering.Infrastructure.Data
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var command = new SqlCommand("SELECT Id, CustomerName, TotalAmount, Status, OrderDate FROM [Ordering].[Orders]", connection);
+                var command = new SqlCommand("SELECT Id, CustomerName, TotalAmount, Status, OrderDate FROM [Ordering].[Orders] Order By OrderDate Desc", connection);
 
                 using (var reader = await command.ExecuteReaderAsync())
                 {
@@ -84,7 +84,7 @@ namespace Ordering.Infrastructure.Data
                 var command = new SqlCommand("INSERT INTO [Ordering].[Orders] " +
                     " ([CustomerName],[OrderDate],[TotalAmount],[Status]) VALUES (@CustomerName,@OrderDate,@TotalAmount,@Status)", connection);
                 command.Parameters.AddWithValue("@CustomerName", Order.CustomerName);
-                command.Parameters.AddWithValue("@OrderDate", DateTime.UtcNow);
+                command.Parameters.AddWithValue("@OrderDate", Order.OrderDate);
                 command.Parameters.AddWithValue("@TotalAmount", Order.TotalAmount);
                 command.Parameters.AddWithValue("@Status", Order.Status);
                 await command.ExecuteNonQueryAsync();
@@ -96,11 +96,10 @@ namespace Ordering.Infrastructure.Data
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var command = new SqlCommand("UPDATE [Ordering].[Orders] SET CustomerName = @CustomerName,Status = @Status, TotalAmount = @TotalAmount WHERE Id = @Id", connection);
+                var command = new SqlCommand("UPDATE [Ordering].[Orders] SET CustomerName = @CustomerName, TotalAmount = @TotalAmount WHERE Id = @Id", connection);
                 command.Parameters.AddWithValue("@CustomerName", Order.CustomerName);
                 command.Parameters.AddWithValue("@Id", Order.Id);
                 command.Parameters.AddWithValue("@TotalAmount", Order.TotalAmount);
-                command.Parameters.AddWithValue("@Status", Order.Status);
                 await command.ExecuteNonQueryAsync();
             }
         }

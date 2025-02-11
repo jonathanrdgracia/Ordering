@@ -11,8 +11,8 @@ namespace Ordering.Domain.Models
         public OrderStatus Status { get; set; } = OrderStatus.Active;
         public static Order Create(string customerName, decimal totalAmount, DateTime orderDate)
         {
-            ArgumentOutOfRangeException.ThrowIfLessThan(totalAmount.ToString().Length,0);
-            ArgumentOutOfRangeException.ThrowIfLessThan(customerName.Length, 3);
+            ArgumentOutOfRangeException.ThrowIfLessThan(totalAmount.ToString().Length, 0,"El total debe ser 1.00 en adelante");
+            ArgumentOutOfRangeException.ThrowIfLessThan(customerName.Length, 3,"Nombre debe ser mayor a 3");
 
             var order = new Order
             {
@@ -39,10 +39,6 @@ namespace Ordering.Domain.Models
             AddDomainEvent(new OrderDeletedEvent(this));
         }
 
-        public void Add(decimal totalAmount, string customerName)
-        {
-            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(totalAmount);
-            ArgumentOutOfRangeException.ThrowIfLessThan(customerName.Length, 5);
-        }
+      
     }
-}
+} 

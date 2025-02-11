@@ -11,7 +11,6 @@
                 var order = await dbContext.GetOrderByIdAsync(orderToUpdate.Id);
                
                 await dbContext.UpdateOrderAsync(orderToUpdate);
-                await dbContext.SaveChangesAsync(cancellationToken);
 
             }
             catch (Exception message )
