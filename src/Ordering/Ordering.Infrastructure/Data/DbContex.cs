@@ -26,7 +26,7 @@ namespace Ordering.Infrastructure.Data
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var command = new SqlCommand("SELECT Id, CustomerName, TotalAmount, Status, OrderDate FROM [Ordering].[Orders] Order By OrderDate Desc", connection);
+                var command = new SqlCommand("SELECT Id, CustomerName, TotalAmount, Status, OrderDate FROM [Ordering].[Orders] Order WHERE Status = 1 By OrderDate Desc", connection);
 
                 using (var reader = await command.ExecuteReaderAsync())
                 {
@@ -109,7 +109,7 @@ namespace Ordering.Infrastructure.Data
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var command = new SqlCommand("DELETE FROM Orders WHERE Id = @Id", connection);
+                var command = new SqlCommand("DELETE [Ordering].[Orders] WHERE Id = @Id", connection);
                 command.Parameters.AddWithValue("@Id", id);
                 await command.ExecuteNonQueryAsync();
             }

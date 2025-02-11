@@ -11,6 +11,6 @@ namespace Ordering.Application.Orders.Commands.UpdateOrder;
     {
         public UpdateOrderCommandValidator()
         {
-            RuleFor(x => x.Order.Id).NotEmpty().WithMessage("Id is required");
+            RuleFor(x => x.Order.Id).NotEmpty().WithMessage("Id for update Order is required");
         }
     }

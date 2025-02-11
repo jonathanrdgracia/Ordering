@@ -9,6 +9,7 @@ namespace Ordering.Domain.Models
         public decimal TotalAmount { get; set; } = default!;
         public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; } = OrderStatus.Active;
+
         public static Order Create(string customerName, decimal totalAmount, DateTime orderDate)
         {
             ArgumentOutOfRangeException.ThrowIfLessThan(totalAmount.ToString().Length, 0,"El total debe ser 1.00 en adelante");

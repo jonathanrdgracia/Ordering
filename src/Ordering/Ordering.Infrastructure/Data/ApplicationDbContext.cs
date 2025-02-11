@@ -48,7 +48,7 @@ namespace Ordering.Infrastructure.Data
 
         public async Task DeleteOrderAsync(int id)
         {
-            throw new NotImplementedException();
+            await _context.DeleteOrderAsync(id);
         }
     }
 }

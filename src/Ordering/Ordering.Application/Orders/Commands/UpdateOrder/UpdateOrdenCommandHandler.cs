@@ -7,15 +7,15 @@
         {
             try
             {
-                var orderToUpdate = command.Order;
-                var order = await dbContext.GetOrderByIdAsync(orderToUpdate.Id);
+                var _orderToUpdate = command.Order;
+                var order = await dbContext.GetOrderByIdAsync(_orderToUpdate.Id);
                
-                await dbContext.UpdateOrderAsync(orderToUpdate);
+                await dbContext.UpdateOrderAsync(_orderToUpdate);
 
             }
             catch (Exception message )
             {
-               throw new OrderNotFoundException(message.ToString());
+                return new UpdateOrderResult(false);
             }
             return new UpdateOrderResult(true);
         }
