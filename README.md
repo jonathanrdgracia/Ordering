@@ -32,6 +32,7 @@ Microsoft.Extensions.DependencyInjection.Abstractions
 
 <details><summary>BuildBlocks Project</summary>
 <p>
+  
 ```powershell
 Microsoft.Extensions.DependencyInjection.Abstractions
 ``` 
