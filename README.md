@@ -1,6 +1,9 @@
 
 
-<details><summary>Nuget packages depencies Clean Archirecture</summary>
+
+
+### Manage NuGet packages Dependencies by structure
+<details><summary>Clean Archirecture</summary>
 <p>
 
 #### Ordering.Domain Layer
@@ -27,10 +30,8 @@ Microsoft.Extensions.DependencyInjection.Abstractions
 </p>
 </details> 
 
-<details><summary>Nuget packages depencies fro BuildBlocks Project</summary>
+<details><summary>BuildBlocks Project</summary>
 <p>
-
-#### BuildBlocks Project
 ```powershell
 Microsoft.Extensions.DependencyInjection.Abstractions
 ``` 
@@ -49,3 +50,10 @@ FluentValidation
 
 </p>
 </details> 
+
+### DB & Schemas Scripts
+
+<details><summary>Creame Schema Ordering </summary>
+<p>
+CREATE SCHEMA Ordering
+</p>
