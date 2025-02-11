@@ -16,7 +16,7 @@ namespace Ordering.Application.Orders.Queries.GetOrderById
 
             var response = order.Adapt<OrderDto>();
 
-            // Devolver el resultado esperado
+           
             return new GetOrderByIdResult(response);
 
         }

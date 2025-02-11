@@ -9,7 +9,7 @@ public class UpdateOrder : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPut("/api/orders", async (UpdateOrderRequest request, ISender sender) =>
+        app.MapPut("/api/order", async (UpdateOrderRequest request, ISender sender) =>
         {
             var command = request.Adapt<UpdateOrderCommand>();
             var result = await sender.Send(command);
